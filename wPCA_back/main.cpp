@@ -63,6 +63,7 @@ int main(int argc, char *argv[]) {
 		wpca.load_with_N(dir_wpca.str(), input_info.Rd);
 		//í èÌÇÕÇ±Ç¡Çø
 		dir_Result << input_info.dir_GP << fcase[i] << "/mean.raw";
+		//dir_Result << input_info.dir_GP << fcase[i] << "/linear.raw";  //ê¸å`ó\ë™ÇÃåãâ ÇèoÇµÇΩÇ¢Ç∆Ç´ÇÕÇ±Ç¡Çø
 		read_vector(result, dir_Result.str());
 		Eigen::MatrixXd result_read = Eigen::Map<Eigen::MatrixXd>(&result[0], input_info.Rd, 1);
 		
@@ -72,24 +73,20 @@ int main(int argc, char *argv[]) {
 		//int k = (fcase.size()-2) * i;
 		//Eigen::MatrixXd result_read = Eigen::Map<Eigen::MatrixXd>(&result[k], input_info.Rd, 1);
 		//std::cout << result_read << std::endl;
-		//
+		
 		Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > Y;
-		//Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > w;
+
 		
 		wpca.pre_image(Y, result_read);
-		//wpca.pre_W(w, result_read);
 		nari::vector<double> R ;
 		std::stringstream O_file;
-		//std::stringstream O_file_w;
 		std::ostringstream O_file_r;
 		std::ostringstream O_file_rl;
 		O_file << input_info.dir_out << rcase[i] << "/mat";
-		//O_file_w << input_info.dir_out << rcase[i] << "/weight";
 		O_file_r << input_info.dir_out << rcase[i] << "/result.raw";
 		O_file_rl << input_info.dir_out << rcase[i] << "/result_label.raw";
 		nari::system::make_directry(O_file.str());
 		write_matrix_raw_and_txt(Y, O_file.str());
-		//write_matrix_raw_and_txt(w, O_file_w.str());
 		//Ëáílèàóù
 		for (int j = 0; j < Y.rows(); j++) {
 			for (int k = 0; k < Y.cols(); k++) {
@@ -105,7 +102,6 @@ int main(int argc, char *argv[]) {
 		nari::mhd mhdr;
 		mhdr.size123(192,192,120);
 		mhdr.reso123(0.26,0.26,0.27);
-		//mhdr.save_mhd_and_image(R, O_file_r.str());
 		mhdr.save_mhd_and_image(R_label, O_file_rl.str());
 		std::string path = "H:/spatial_normalization/output/Mbrain/premove/normalized_label/" + rcase[i] + "_nmlzd.raw";
 		mhdr.save_mhd_and_image(R_label, path);
