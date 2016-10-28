@@ -351,6 +351,7 @@ namespace saito {
 		/*resize matrices or vectors*/
 		M.resize(num_of_dimX, num_of_dimY);
 		X_mean.resize(num_of_dimX);
+	    w.resize(num_of_dimX);
 		Eval.resize(num_of_dimY);
 		sqrtL.resize(num_of_dimY);
 		invsqrtL.resize(num_of_dimY);
@@ -362,6 +363,7 @@ namespace saito {
 			read_bin(&M(0, j), num_of_dimX, name.str());
 		}
 		read_bin(&X_mean(0), num_of_dimX, modelDir + "/mean.vect");
+		read_bin(&w(0), num_of_dimX, modelDir + "/weight.vect");
 		read_bin(&Eval(0), num_of_dimY, modelDir + "/eval.vect");
 		read_bin(&CCR(0), num_of_dimY, modelDir + "/CCR.vect");
 		sqrtL = Eval.array().sqrt().matrix();
@@ -404,10 +406,14 @@ namespace saito {
 	void model< T >::pre_image(Mat_t &X, const Mat_t &Y) {
 		X = (M * Y).colwise() + X_mean;
 	}
-
+	template< class T >
+	void model< T >::cal_weight(Mat_t &X) {
+		X = w;
+	}
 	template< class T >
 	void model< T >::pre_image_normal(Mat_t &X, const Mat_t &Alpha) {
 		X = (M * (sqrtL.asDiagonal() * Alpha)).colwise() + X_mean;
+
 	}
 
 	template< class T >

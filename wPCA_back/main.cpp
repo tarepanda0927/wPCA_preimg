@@ -75,9 +75,10 @@ int main(int argc, char *argv[]) {
 		//std::cout << result_read << std::endl;
 		
 		Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > Y;
-
+		Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic > weight;
 		
 		wpca.pre_image(Y, result_read);
+		wpca.cal_weight(weight);
 		nari::vector<double> R ;
 		std::stringstream O_file;
 		std::ostringstream O_file_r;
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 		//è‡’lˆ—
 		for (int j = 0; j < Y.rows(); j++) {
 			for (int k = 0; k < Y.cols(); k++) {
-				double rs = Y(j, k);
+				double rs = Y(j, k) / weight(j, k);
 				R.push_back(rs);
 			}
 		}
@@ -104,6 +105,8 @@ int main(int argc, char *argv[]) {
 		mhdr.reso123(0.26,0.26,0.27);
 		mhdr.save_mhd_and_image(R_label, O_file_rl.str());
 		std::string path = "H:/spatial_normalization/output/Mbrain/premove/normalized_label/" + rcase[i] + "_nmlzd.raw";
+		std::string path_dist = "H:/spatial_normalization/output/Mbrain/premove/normalized_label/" + rcase[i] + "_dist.raw";
 		mhdr.save_mhd_and_image(R_label, path);
+		mhdr.save_mhd_and_image(R, path_dist);
 	}
 }

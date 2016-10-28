@@ -141,6 +141,7 @@ namespace saito {
 		* @param[in] Y ‹tÊ‘œ‚·‚éå¬•ª“¾“_ (³‹K‰»‚È‚µ)
 		*/
 		void pre_image(Mat_t &X, const Mat_t &Y);
+		void cal_weight(Mat_t & X);
 		/**
 		* @brief ³‹K‰»‚³‚ê‚½•”•ª‹óŠÔ‚©‚ç“ü—Í‹óŠÔ‚Ö‚Ì‹tÊ‘œ (pre_image)
 		*
